@@ -1,19 +1,19 @@
+const MainLayout = () => import('layouts/MainLayout.vue');
+const Tasks = () => import('pages/Task.vue');
 
 const routes = [
-  {
-    path: '/',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/IndexPage.vue') }
-    ]
-  },
+	{
+		path: '/',
+		component: MainLayout,
+		children: [
+			{
+				path: '/tasks',
+				name: 'Tasks',
+				component: Tasks
+			}
+		]
+	},
 
-  // Always leave this as last one,
-  // but you can also remove it
-  {
-    path: '/:catchAll(.*)*',
-    component: () => import('pages/ErrorNotFound.vue')
-  }
 ]
 
 export default routes
