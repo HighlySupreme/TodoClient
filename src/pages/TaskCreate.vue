@@ -1,6 +1,6 @@
 <template>
     <q-page>
-        <t-navigation-bar title="Task Create"></t-navigation-bar>
+        <t-navigation-bar :title="title"></t-navigation-bar>
 
         <q-card class="q-pa-md">
             <div class="row">
@@ -10,6 +10,11 @@
                     <t-input-row label="Description" v-model="task.description"/>
                 </div>
             </div>
+
+            <q-card-actions align="center">
+                <q-btn label="Cancel" stack no-caps class="k-button" @click="cancelTask"/>
+                <q-btn :label="isTaskEdit ? 'Save task' : 'Create task'" color="blue" stack no-caps class="k-button" @click="saveTask"/>
+            </q-card-actions>
         </q-card>
 
     </q-page>
@@ -17,18 +22,47 @@
 
 <script>
 import {reactive} from "vue";
+import restService from "src/services/rest.service";
+import {useRouter} from "vue-router";
 
 export default {
     name: "TaskCreate",
     setup() {
+        const router = useRouter()
+
+        const taskId = router.currentRoute.value.params.taskId
+        const title = router.currentRoute.value.meta.title
+        const isTaskEdit = router.currentRoute.value.name === "TaskEdit"
+
         const task = reactive({
             title: "",
             person: "",
             description: ""
         })
 
+        function cancelTask() {
+            router.go(-1)
+        }
+
+        function saveTask() {
+            let promise;
+            if (isTaskEdit) {
+                promise = restService.updateTask(taskId, task)
+            } else {
+                promise = restService.createTask(task)
+            }
+
+            promise
+                .then(() => router.back())
+                .catch(() => {})
+        }
+
         return {
-            task
+            cancelTask,
+            saveTask,
+            task,
+            title,
+            isTaskEdit
         }
 
     }
