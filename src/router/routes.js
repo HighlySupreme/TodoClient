@@ -17,6 +17,7 @@ const routes = [
 				name: 'TaskCreate',
 				component: TaskCreate,
                 meta: {
+                    title: 'Task Create',
                     breadcrumb: [
                         {labelKey: 'TODO List', to: '/tasks'},
                         {labelKey: 'Task Create'},
@@ -28,6 +29,7 @@ const routes = [
 				name: 'TaskEdit',
 				component: TaskCreate,
                 meta: {
+                    title: 'Task Edit',
                     breadcrumb: [
                         {labelKey: 'TODO List', to: '/tasks'},
                         {labelKey: 'Task Edit'},
