@@ -15,12 +15,24 @@ const routes = [
 			{
 				path: '/tasks/create',
 				name: 'TaskCreate',
-				component: TaskCreate
+				component: TaskCreate,
+                meta: {
+                    breadcrumb: [
+                        {labelKey: 'TODO List', to: '/tasks'},
+                        {labelKey: 'Task Create'},
+                    ]
+                }
 			},
 			{
 				path: '/tasks/edit/:taskId',
 				name: 'TaskEdit',
-				component: TaskCreate
+				component: TaskCreate,
+                meta: {
+                    breadcrumb: [
+                        {labelKey: 'TODO List', to: '/tasks'},
+                        {labelKey: 'Task Edit'},
+                    ]
+                }
 			}
 		]
 	},
