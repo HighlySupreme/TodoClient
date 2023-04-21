@@ -1,62 +1,61 @@
 <template>
     <q-page>
+        <t-navigation-bar title="TODO List"></t-navigation-bar>
 
-        <q-table :rows="tasks"
-                 :columns="fields"
-                 row-key="id"
-                 selection="multiple"
-                 @row-click="addToSelectedList"
-                 :filter="filter">
+        <q-card>
+            <q-table :rows="tasks"
+                     :columns="fields"
+                     row-key="id"
+                     selection="multiple"
+                     @row-click="addToSelectedList"
+                     :filter="filter">
 
 
-            <template v-slot:top-left>
-                <div class="flex">
-                    <q-input
-                        class="q-mr-sm"
-                        dense outlined
-                        debounce="300"
-                        v-model="filter"
-                        placeholder="Search"
-                    >
-                        <template v-slot:append>
-                            <q-icon name="search" />
-                        </template>
-                    </q-input>
+                <template v-slot:top-left>
+                    <div class="flex">
+                        <q-input
+                            class="q-mr-sm"
+                            dense outlined
+                            debounce="300"
+                            v-model="filter"
+                            placeholder="Search"
+                        >
+                            <template v-slot:append>
+                                <q-icon name="search" />
+                            </template>
+                        </q-input>
 
-                    <q-btn color="grey-6" label="Filter" icon="mdi-filter-outline"
-                           class="k-filter-button shadow-0"></q-btn>
-                </div>
-            </template>
-            <template v-slot:top-right>
-                <q-btn flat round color="k-primary" icon="mdi-trash-can-outline" :disable="!isMultipleTasksSelected" @click="deleteTasksPrompt">
-                    <q-tooltip :offset="[0,0]">Delete</q-tooltip>
-                </q-btn>
-                <q-btn flat round color="k-primary" icon="mdi-pencil-outline" :disable="!isSingleTaskSelected" @click="editTask()">
-                    <q-tooltip :offset="[0,0]">Edit</q-tooltip>
-                </q-btn>
-                <q-btn flat round color="k-primary" icon="mdi-content-copy" :disable="!isSingleTaskSelected" @click="copyTask">
-                    <q-tooltip :offset="[0,0]">Copy</q-tooltip>
-                </q-btn>
-                <q-btn flat round color="k-primary" icon="mdi-plus" @click="createTask">
-                    <q-tooltip :offset="[0,0]">Add</q-tooltip>
-                </q-btn>
-                <q-btn flat round color="k-primary" icon="mdi-refresh" @click="refreshTasks">
-                    <q-tooltip :offset="[0,0]">Refresh</q-tooltip>
-                </q-btn>
-            </template>
-
-            <template v-slot:body-cell-code="props">
-                <q-td :props="props">
-                    <div class="k-table-cell-click">
-                        <p @click="editTask(props.row)">{{ props.row.code }}</p>
+                        <q-btn label="Filter" icon="mdi-filter-outline"
+                               class="k-filter-button shadow-0"></q-btn>
                     </div>
-                </q-td>
-            </template>
+                </template>
+                <template v-slot:top-right>
+                    <q-btn flat round color="k-primary" icon="mdi-trash-can-outline" :disable="!isMultipleTasksSelected" @click="deleteTasksPrompt">
+                        <q-tooltip :offset="[0,0]">Delete</q-tooltip>
+                    </q-btn>
+                    <q-btn flat round color="k-primary" icon="mdi-pencil-outline" :disable="!isSingleTaskSelected" @click="editTask()">
+                        <q-tooltip :offset="[0,0]">Edit</q-tooltip>
+                    </q-btn>
+                    <q-btn flat round color="k-primary" icon="mdi-content-copy" :disable="!isSingleTaskSelected" @click="copyTask">
+                        <q-tooltip :offset="[0,0]">Copy</q-tooltip>
+                    </q-btn>
+                    <q-btn flat round color="k-primary" icon="mdi-plus" @click="createTask">
+                        <q-tooltip :offset="[0,0]">Add</q-tooltip>
+                    </q-btn>
+                    <q-btn flat round color="k-primary" icon="mdi-refresh" @click="refreshTasks">
+                        <q-tooltip :offset="[0,0]">Refresh</q-tooltip>
+                    </q-btn>
+                </template>
 
-
-        </q-table>
-
-
+                <template v-slot:body-cell-code="props">
+                    <q-td :props="props">
+                        <div class="k-table-cell-click">
+                            <p @click="editTask(props.row)">{{ props.row.code }}</p>
+                        </div>
+                    </q-td>
+                </template>
+            </q-table>
+        </q-card>
     </q-page>
 </template>
 
