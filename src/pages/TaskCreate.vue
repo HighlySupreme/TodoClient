@@ -47,14 +47,24 @@ export default {
         function saveTask() {
             let promise;
             if (isTaskEdit) {
-                promise = restService.updateTask(taskId, task)
+                promise = restService.updateTask(task)
             } else {
                 promise = restService.createTask(task)
             }
 
             promise
-                .then(() => router.back())
+                .then()
                 .catch(() => {})
+                .finally(() => router.push({name: "Tasks"}))
+        }
+
+        getTask()
+
+        function getTask() {
+            if (!isTaskEdit) return
+
+            restService.getTask(router.currentRoute.value.params.id)
+                .then(d => Object.assign(task, d))
         }
 
         return {

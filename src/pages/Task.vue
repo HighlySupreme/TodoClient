@@ -7,6 +7,7 @@
                      :columns="fields"
                      row-key="id"
                      selection="multiple"
+                     :selected.sync="selectedTaskArray"
                      @row-click="addToSelectedList"
                      :filter="filter">
 
@@ -30,15 +31,15 @@
                     </div>
                 </template>
                 <template v-slot:top-right>
-                    <q-btn flat round color="k-primary" icon="mdi-trash-can-outline" :disable="!isMultipleTasksSelected" @click="deleteTasksPrompt">
+                    <q-btn flat round color="k-primary" icon="mdi-trash-can-outline" :disable="!isMultipleTasksSelected" @click="deleteTasks">
                         <q-tooltip :offset="[0,0]">Delete</q-tooltip>
                     </q-btn>
                     <q-btn flat round color="k-primary" icon="mdi-pencil-outline" :disable="!isSingleTaskSelected" @click="editTask()">
                         <q-tooltip :offset="[0,0]">Edit</q-tooltip>
                     </q-btn>
-                    <q-btn flat round color="k-primary" icon="mdi-content-copy" :disable="!isSingleTaskSelected" @click="copyTask">
+<!--                    <q-btn flat round color="k-primary" icon="mdi-content-copy" :disable="!isSingleTaskSelected" @click="copyTask">
                         <q-tooltip :offset="[0,0]">Copy</q-tooltip>
-                    </q-btn>
+                    </q-btn>-->
                     <q-btn flat round color="k-primary" icon="mdi-plus" @click="createTask">
                         <q-tooltip :offset="[0,0]">Add</q-tooltip>
                     </q-btn>
@@ -54,6 +55,14 @@
                         </div>
                     </q-td>
                 </template>
+                <template v-slot:body-cell-edit="props">
+                    <q-td :props="props">
+                        <q-btn
+                            color="blue"
+                            dense icon="mdi-pencil-outline" flat
+                            @click="editTask(props.row)"/>
+                    </q-td>
+                </template>
             </q-table>
         </q-card>
     </q-page>
@@ -67,13 +76,14 @@ import {useQuasar} from "quasar";
 import {useRouter} from "vue-router";
 
 const fields = [
-    { name: "task", label: "task", align: "left", field: "task", sortable: true },
-    { name: "date", label: "date", align: "left", field: "date", sortable: true },
-    { name: "person", label: "person", align: "left", field: "person", sortable: true },
-    { name: "description", label: "description", align: "left", field: "description", sortable: true }
+    { name: "title", label: "Title", align: "left", field: "title", sortable: true },
+    { name: "person", label: "Person", align: "left", field: "person", sortable: true },
+    { name: "description", label: "Description", align: "left", field: "description", sortable: true },
+    { name: "createdDate", label: "Created Date", align: "left", field: "createdDateStr", sortable: true },
+    { name: "edit", label: "Edit", align: "left", field: "edit", sortable: true }
 ];
 export default {
-    name: "Task",
+    name: "Tasks",
 
     setup() {
         getTasks()
@@ -85,7 +95,10 @@ export default {
 
         function getTasks() {
             restService.getTasks()
-                .then(t => Object.assign(tasks, t))
+                .then(t => {
+                    console.log(t)
+                    Object.assign(tasks, t)
+                })
         }
 
         function refreshTasks() {
@@ -101,15 +114,6 @@ export default {
                 .catch(err => {
                     console.error(err);
                 });
-        }
-
-        function deleteTasksPrompt() {
-            $q.dialog({
-                title: "Are you sure you want to delete selected tasks?",
-                ok: { label: "Yes", class: "k-button" },
-                cancel: { label: "Cancel", class: "k-button", flat: true },
-                class: "k-prompt-dialog"
-            }).onOk(deleteTasks)
         }
 
         function addToSelectedList(e, item) {
@@ -131,7 +135,7 @@ export default {
 
             router.push({
                 name: "TaskEdit",
-                params: { ...router.currentRoute.value.params, colorCode: task.code }
+                params: { ...router.currentRoute.value.params, id: task.id }
             });
         }
 
@@ -146,9 +150,9 @@ export default {
 
         return {
             refreshTasks,
-            deleteTasksPrompt,
             addToSelectedList,
             editTask,
+            deleteTasks,
             copyTask,
             createTask,
             filter,
@@ -156,6 +160,7 @@ export default {
             fields,
             isSingleTaskSelected,
             isMultipleTasksSelected,
+            selectedTaskArray
 
         }
 

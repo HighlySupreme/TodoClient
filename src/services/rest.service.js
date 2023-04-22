@@ -6,6 +6,10 @@ const getTasks = async () => {
     return axiosService.GET(`/api/${apiVersion}/task`)
         .then(r => r.data)
 }
+const getTask = async (id) => {
+    return axiosService.GET(`/api/${apiVersion}/task/${id}`)
+        .then(r => r.data)
+}
 
 const createTask = async (task) => {
     return axiosService.POST(`/api/${apiVersion}/task`, task)
@@ -13,6 +17,7 @@ const createTask = async (task) => {
 }
 
 const updateTask = async (task) => {
+    console.log(task)
     return axiosService.PUT(`/api/${apiVersion}/task`, task)
         .then(r => r.data)
 }
@@ -24,6 +29,7 @@ const deleteTasks = async (tasks) => {
 
 export default {
     getTasks,
+    getTask,
     createTask,
     updateTask,
     deleteTasks

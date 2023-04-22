@@ -25,7 +25,7 @@ const routes = [
                 }
 			},
 			{
-				path: '/tasks/edit/:taskId',
+				path: '/tasks/edit/:id',
 				name: 'TaskEdit',
 				component: TaskCreate,
                 meta: {
